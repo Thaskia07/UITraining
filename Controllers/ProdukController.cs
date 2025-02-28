@@ -22,33 +22,33 @@ namespace UITraining.Controllers
 
         public IActionResult Edit(int id)
         {
-
-            var products = _interface.GetProdukById(id);
-            return View(products);
+            var product = _interface.GetProdukById(id);
+            if (product == null || product.ProductStatus == ProdukStatus.deleted || product.IsDeleted == true)
+            {
+                return NotFound(); 
+            }
+            return View(product);
         }
 
         [HttpPost]
         public IActionResult Edit(Produk produk)
         {
-            var EditProduct = _interface.EditProduct(produk);
-            if (EditProduct)
+            var editProduct = _interface.EditProduct(produk);
+            if (editProduct)
             {
                 return RedirectToAction(nameof(Index));
             }
-            return View();
-
-
+            return View(produk);
         }
 
-        [HttpGet]
-        public IActionResult Delete(int Id)
+        public IActionResult Delete(int id)
         {
-            var delproduct = _interface.DeleteProduct(Id);
-            if (delproduct)
+            var result = _interface.DeleteProduct(id);
+            if (!result)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return BadRequest("Delete not succes");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

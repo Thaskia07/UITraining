@@ -9,6 +9,7 @@
         public int Price { get; set; }
         public int Stock { get; set; }
         public ProdukStatus ProductStatus { get; set; }
+        public bool IsDeleted { get; set; } = false; // Default false
 
 
     }

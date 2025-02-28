@@ -1,14 +1,9 @@
-﻿@* INI CODINGAN BRU DITAMBAHKAN PADA TGL 23*@
-@using UITraining.Models.DB
+﻿@using UITraining.Models.DB
 @model List<Produk>
-
-
 
 @{
     ViewData["Title"] = "Produk";
 }
-
-
 
 <main id="main" class="main">
 
@@ -26,46 +21,63 @@
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Datatables</h5>
-                        <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable. Check for <a href="https://fiduswriter.github.io/simple-datatables/demos/" target="_blank">more examples</a>.</p>
+                        <p>Gunakan tabel ini untuk melihat daftar produk.</p>
 
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
                             <thead>
-                                @* ================ INI YANG DIUBAH TGl 23 ======================*@
                                 <tr>
-                                    <th>Id</th>
-                                    <th>
-                                        <b>N</b>ame
-                                    </th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Stock</th>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Deskripsi</th>
+                                    <th>Harga</th>
+                                    <th>Stok</th>
                                     <th>Status</th>
-                                    <th>Action</th>
-                                    @* <th data-type="date" data-format="YYYY/DD/MM">Start Date</th> *@
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @* ================ INI YANG DIUBAH TGL 23 ======================*@
                                 @foreach (var data in Model)
                                 {
-                                    <tr>
-                                        <td>@data.Id</td>
-                                        <td>@data.Name</td>
-                                        <td>@data.Description</td>
-                                        <td>@data.Price</td>
-                                        <td>@data.Stock</td>
-                                        <td>@data.ProductStatus</td>
-                                        <td>
-                                            <!-- Action buttons column -->
-                                            <a href="@Url.Action("Edit", "Produk", new { id = data.Id })" class="btn btn-sm btn-info">Update</a>
-                                            <a href="@Url.Action("Delete", "Produk", new { id = data.Id })" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">Delete</a>
-                                        </td>
-                                    </tr>
+                                    if (data.ProductStatus != ProdukStatus.deleted) // Hanya tampilkan yang belum dihapus
+                                    {
+                                        <tr>
+                                            <td>@data.Id</td>
+                                            <td>@data.Name</td>
+                                            <td>@data.Description</td>
+                                            <td>@data.Price</td>
+                                            <td>@data.Stock</td>
+                                            <td>
+                                                @if (data.ProductStatus == ProdukStatus.publishe)
+                                                {
+                                                    <span class="badge bg-success">Tersedia</span>
+                                                }
+                                                else if (data.ProductStatus == ProdukStatus.unpublished)
+                                                {
+                                                    <span class="badge bg-warning">Belum Dirilis</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Dihapus</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Edit", "Produk", new { id = data.Id })" class="btn btn-sm btn-info">Update</a>
+
+                                                <!-- Soft Delete -->
+                                                <form asp-action="Delete" method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" value="@data.Id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -73,7 +85,6 @@
 
                     </div>
                 </div>
-
             </div>
         </div>
     </section>

@@ -70,11 +70,14 @@ namespace UITraining.Services
                 return false;
             }
 
-            _context.produks.Remove(data);
+            // Ubah status menjadi deleted (soft delete)
+            data.ProductStatus = ProdukStatus.deleted;
+            _context.produks.Update(data);
             _context.SaveChanges();
 
             return true;
         }
+
 
     }
 }
