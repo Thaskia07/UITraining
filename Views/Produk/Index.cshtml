@@ -1,5 +1,5 @@
-﻿@using UITraining.Models.DB
-@model List<Produk>
+﻿@using UITraining.Models.DTO
+@model List<ProductDTO>
 
 @{
     ViewData["Title"] = "Produk";
@@ -23,8 +23,9 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables</h5>
-                        <p>Gunakan tabel ini untuk melihat daftar produk.</p>
+                        <h5 class="card-title">Product</h5>
+                        <a href="@Url.Action("Edit", "Produk")" class="btn-info">Add Product</a>
+
 
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
@@ -33,7 +34,8 @@
                                     <th>ID</th>
                                     <th>Nama</th>
                                     <th>Deskripsi</th>
-                                    <th>Harga</th>
+                                    <th>Price</th>
+                                    <th>Supplier</th>
                                     <th>Stok</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
@@ -42,29 +44,27 @@
                             <tbody>
                                 @foreach (var data in Model)
                                 {
-                                    if (data.ProductStatus != ProdukStatus.deleted) // Hanya tampilkan yang belum dihapus
-                                    {
+                                  
                                         <tr>
                                             <td>@data.Id</td>
                                             <td>@data.Name</td>
                                             <td>@data.Description</td>
                                             <td>@data.Price</td>
+                                            <td>@data.SupplierName</td>
+
                                             <td>@data.Stock</td>
                                             <td>
-                                                @if (data.ProductStatus == ProdukStatus.publishe)
+                                                @if (data.ProductStatus.ToString() == "publishe")
                                                 {
-                                                    <span class="badge bg-success">Tersedia</span>
+                                                    <span class="badge bg-success">Published</span>
                                                 }
-                                                else if (data.ProductStatus == ProdukStatus.unpublished)
+                                                else if (data.ProductStatus.ToString() == "unpublished")
                                                 {
-                                                    <span class="badge bg-warning">Belum Dirilis</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-danger">Dihapus</span>
+                                                    <span class="badge bg-warning">Unpublished</span>
                                                 }
                                             </td>
                                             <td>
+                                                
                                                 <a href="@Url.Action("Edit", "Produk", new { id = data.Id })" class="btn btn-sm btn-info">Update</a>
 
                                                 <!-- Soft Delete -->
@@ -77,7 +77,7 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    }
+                                    
                                 }
                             </tbody>
                         </table>

@@ -2,6 +2,8 @@
 using UITraining.Interfaces;
 using UITraining.Models;
 using UITraining.Models.DB;
+using UITraining.Models.DTO;
+using static UITraining.Models.GeneralStatus;
 
 namespace UITraining.Services
 {
@@ -14,25 +16,29 @@ namespace UITraining.Services
             _context = context;
         }
 
-        public List<Produk> GetAllproduct()
+        public List<ProductDTO> GetAllproduct()
         {
-            var product = _context.produks.Where(x => x.ProductStatus != ProdukStatus.deleted).Select(x => new Produk
-            {
+            var product = _context.produks
+                .Include(y => y.Supplier)
+                .Where(x => x.ProductStatus != GeneralStatusData.deleted)
+                .Select(x => new ProductDTO
+                { 
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
                 Stock = x.Stock,
                 ProductStatus = x.ProductStatus,
-
-
+                SupplierName = x.Supplier.SupplierName
             }).ToList();
+
+
             return product;
         }
         public Produk GetProdukById(int id)
         {
             var product = _context.produks
-                .Where(x => x.Id == id && x.ProductStatus != ProdukStatus.deleted).FirstOrDefault();
+                .Where(x => x.Id == id && x.ProductStatus != GeneralStatusData.deleted).FirstOrDefault();
 
             if (product == null)
             {
@@ -41,7 +47,7 @@ namespace UITraining.Services
 
             return product;
         }
-        public bool EditProduct(Produk produk)
+        public bool EditProduct(ProductDTO produk)
         {
             var data = _context.produks.FirstOrDefault(x=>x.Id == produk.Id);
             if(data == null)
@@ -62,6 +68,24 @@ namespace UITraining.Services
         }
 
 
+
+        public bool AddProduct(ProductDTO produk)
+        {
+            var datas = _context.produks.Select(x => new Produk
+            {
+                IdSupplier = produk.IdSupplier,
+                Name = produk.Name,
+                Description = produk.Description,
+                Stock = produk.Stock,
+                Price = produk.Price,
+                ProductStatus = produk.ProductStatus,
+
+            });
+            _context.Add(datas);
+            _context.SaveChanges();
+            
+            return true;
+        }
         public bool DeleteProduct(int id)
         {
             var data = _context.produks.FirstOrDefault(x => x.Id == id);
@@ -71,7 +95,7 @@ namespace UITraining.Services
             }
 
             // Ubah status menjadi deleted (soft delete)
-            data.ProductStatus = ProdukStatus.deleted;
+            data.ProductStatus = GeneralStatusData.deleted;
             _context.produks.Update(data);
             _context.SaveChanges();
 
