@@ -1,4 +1,6 @@
-﻿namespace UITraining.Models.DB
+﻿using static UITraining.Models.GeneralStatus;
+
+namespace UITraining.Models.DB
 {
     public class supplier
     {
@@ -7,6 +9,8 @@
         public string SupplierName { get; set; }
 
         public string SupplierAddress { get; set; }
+
+        public GeneralStatusData SupplierStatus { get; set; }
 
         public ICollection<Produk> Produk { get; set; } = new List<Produk>();
 

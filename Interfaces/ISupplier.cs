@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using UITraining.Models.DB;
+using UITraining.Models.DTO;
 
 namespace UITraining.Interfaces
 {
@@ -8,6 +9,13 @@ namespace UITraining.Interfaces
 
         //public List<Supplier> GetSupplier();
         public List<SelectListItem> Suppliers();
+        public List<SupplierDTO> GetAllSupplier();
+        public supplier GetSupplierById(int id);
+         public bool EditSupplier(SupplierDTO supplier);
 
+        public bool AddSupplier(SupplierDTO supplier);
+
+        public bool DeleteSupplier(int id);
+        
     }
 }

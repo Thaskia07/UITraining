@@ -21,5 +21,5 @@ namespace UITraining.Models.DB
 
     }
 
-    
+
 }

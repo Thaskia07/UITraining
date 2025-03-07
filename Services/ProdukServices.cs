@@ -71,19 +71,32 @@ namespace UITraining.Services
 
         public bool AddProduct(ProductDTO produk)
         {
-            var datas = _context.produks.Select(x => new Produk
-            {
-                IdSupplier = produk.IdSupplier,
-                Name = produk.Name,
-                Description = produk.Description,
-                Stock = produk.Stock,
-                Price = produk.Price,
-                ProductStatus = produk.ProductStatus,
+            //    var datas = _context.produks.Select(x => new Produk
+            //    {
+            //        IdSupplier = produk.IdSupplier,
+            //        Name = produk.Name,
+            //        Description = produk.Description,
+            //        Stock = produk.Stock,
+            //        Price = produk.Price,
+            //        ProductStatus = produk.ProductStatus,
 
-            });
-            _context.Add(datas);
+            //    });
+            //    _context.produks.Add(datas);
+            //    _context.SaveChanges();
+
+
+            var datas = new Produk();
+
+
+            datas.IdSupplier = produk.IdSupplier;
+            datas.Name = produk.Name;
+            datas.Description = produk.Description;
+            datas.Stock = produk.Stock;
+            datas.Price = produk.Price;
+            datas.ProductStatus = produk.ProductStatus;
+            _context.produks.Add(datas);
             _context.SaveChanges();
-            
+
             return true;
         }
         public bool DeleteProduct(int id)

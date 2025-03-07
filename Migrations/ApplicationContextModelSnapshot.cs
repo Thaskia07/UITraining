@@ -59,7 +59,7 @@ namespace UITraining.Migrations
                     b.ToTable("produks");
                 });
 
-            modelBuilder.Entity("UITraining.Models.DB.Supplier", b =>
+            modelBuilder.Entity("UITraining.Models.DB.supplier", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,6 +75,9 @@ namespace UITraining.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("SupplierStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Suppliers");
@@ -82,7 +85,7 @@ namespace UITraining.Migrations
 
             modelBuilder.Entity("UITraining.Models.DB.Produk", b =>
                 {
-                    b.HasOne("UITraining.Models.DB.Supplier", "Supplier")
+                    b.HasOne("UITraining.Models.DB.supplier", "Supplier")
                         .WithMany("Produk")
                         .HasForeignKey("IdSupplier")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -91,7 +94,7 @@ namespace UITraining.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("UITraining.Models.DB.Supplier", b =>
+            modelBuilder.Entity("UITraining.Models.DB.supplier", b =>
                 {
                     b.Navigation("Produk");
                 });

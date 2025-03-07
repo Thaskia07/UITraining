@@ -7,6 +7,8 @@
         {
             publishe,
             unpublished,
+            active,
+            inactive,
             deleted
 
         }

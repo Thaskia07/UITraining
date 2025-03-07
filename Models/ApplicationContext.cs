@@ -20,7 +20,7 @@ namespace UITraining.Models
                  .WithMany(s => s.Produk) //suppliee memiliki banyak produk
                  .HasForeignKey(p => p.IdSupplier); //Id supplier sebagai FK
             //.OnDelete(DeleteBehavior.Cascade);
-                
+
 
             base.OnModelCreating(modelBuilder);
         }
